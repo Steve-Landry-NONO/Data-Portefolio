@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Superstore Sales Performance — Data Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1e28;
+      --accent:#00c8ff; --accent2:#0077ff; --gold:#f5b942;
+      --text:#e8eaf0; --muted:#8890a4;
+      --border:rgba(255,255,255,0.07); --card-bg:rgba(255,255,255,0.03);
+      --radius:14px; --font-head:'Syne',sans-serif; --font-body:'DM Sans',sans-serif;
+      --project-color: #0077ff;
+      --project-color2: #00c8ff;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;}
+    ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:var(--bg);} ::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:3px;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;backdrop-filter:blur(20px);background:rgba(13,15,20,0.9);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--text);text-decoration:none;}
+    .nav-logo span{color:var(--accent);}
+    .nav-back{display:flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color .2s;}
+    .nav-back:hover{color:var(--accent);}
+
+    /* HERO PROJECT */
+    .project-hero{
+      min-height:55vh; display:flex; align-items:flex-end;
+      padding:120px 5vw 60px;
+      background: linear-gradient(160deg, #050a1a 0%, #071428 40%, #0a1f3d 100%);
+      position:relative; overflow:hidden;
+    }
+    .project-hero::before{
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(0,119,255,0.2) 0%, transparent 70%);
+    }
+    .hero-grid-lines{
+      position:absolute; inset:0; opacity:0.04;
+      background-image: linear-gradient(rgba(0,200,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,255,1) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .project-hero-content{position:relative;z-index:1;max-width:780px;}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);margin-bottom:20px;}
+    .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;} .breadcrumb a:hover{color:var(--accent);}
+    .breadcrumb-sep{color:var(--border);}
+    .project-domain-tag{display:inline-flex;align-items:center;gap:8px;font-size:0.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(0,200,255,0.3);padding:5px 14px;border-radius:50px;margin-bottom:20px;}
+    .project-hero h1{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.8rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:18px;}
+    .project-hero h1 em{font-style:normal;color:var(--accent);}
+    .project-hero-desc{font-size:1rem;color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:32px;}
+    .hero-meta{display:flex;gap:32px;flex-wrap:wrap;}
+    .meta-item{display:flex;flex-direction:column;gap:4px;}
+    .meta-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+    .meta-value{font-family:var(--font-head);font-size:0.95rem;font-weight:700;color:var(--text);}
+    .meta-value .chip{display:inline-block;background:rgba(0,119,255,0.15);border:1px solid rgba(0,119,255,0.3);color:var(--accent2);font-size:0.75rem;padding:2px 10px;border-radius:20px;margin:2px 3px 2px 0;font-family:var(--font-body);font-weight:500;}
+
+    /* CONTENT */
+    .project-content{max-width:900px;margin:0 auto;padding:80px 5vw;}
+    .content-section{margin-bottom:72px;}
+    .section-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+    .section-title{font-family:var(--font-head);font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:24px;}
+    .section-title em{font-style:normal;color:var(--accent);}
+    p{color:var(--muted);font-size:0.95rem;line-height:1.8;margin-bottom:14px;}
+    p strong{color:var(--text);font-weight:500;}
+
+    /* VISUAL PLACEHOLDER */
+    .visual-block{
+      background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);
+      aspect-ratio:16/9; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:12px;
+      margin:32px 0; position:relative; overflow:hidden;
+      transition: border-color .3s;
+    }
+    .visual-block:hover{border-color:rgba(0,200,255,0.25);}
+    .visual-block::before{
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(0,119,255,0.05) 0%, transparent 60%);
+    }
+    .visual-placeholder-icon{font-size:2.5rem;opacity:0.4;}
+    .visual-placeholder-text{font-size:0.82rem;color:var(--muted);font-style:italic;}
+    .visual-caption{font-size:0.78rem;color:var(--muted);text-align:center;margin-top:-20px;margin-bottom:32px;font-style:italic;}
+    .visual-block img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius);}
+
+    /* PROCESS TIMELINE */
+    .process-timeline{display:flex;flex-direction:column;gap:0;margin-top:8px;}
+    .timeline-step{display:grid;grid-template-columns:48px 1fr;gap:0 24px;position:relative;}
+    .timeline-step:not(:last-child) .tl-line{height:100%;min-height:20px;}
+    .tl-left{display:flex;flex-direction:column;align-items:center;}
+    .tl-dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));flex-shrink:0;margin-top:4px;box-shadow:0 0 12px rgba(0,200,255,0.4);}
+    .tl-line{width:1px;background:var(--border);flex:1;margin:6px 0;}
+    .tl-body{padding-bottom:36px;}
+    .tl-step-num{font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:6px;}
+    .tl-step-title{font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px;}
+    .tl-step-desc{font-size:0.87rem;color:var(--muted);line-height:1.7;}
+    .tl-step-desc code{background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.15);color:var(--accent);padding:1px 7px;border-radius:4px;font-size:0.82rem;}
+
+    /* KPI CARDS */
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:24px 0;}
+    .kpi-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .3s,transform .3s;}
+    .kpi-card:hover{border-color:rgba(0,200,255,0.25);transform:translateY(-3px);}
+    .kpi-icon{font-size:1.4rem;margin-bottom:10px;display:block;}
+    .kpi-name{font-size:0.75rem;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .kpi-formula{font-size:0.82rem;color:var(--text);font-family:monospace;background:rgba(0,200,255,0.06);padding:4px 8px;border-radius:6px;display:inline-block;}
+
+    /* TOOLS BADGES */
+    .tools-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+    .tool-badge{display:flex;align-items:center;gap:8px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:0.83rem;transition:border-color .2s;}
+    .tool-badge:hover{border-color:rgba(0,200,255,0.3);}
+    .tool-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+    /* INSIGHTS */
+    .insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:8px;}
+    .insight-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;border-left:3px solid var(--accent);}
+    .insight-q{font-size:0.82rem;font-weight:600;color:var(--accent);margin-bottom:8px;}
+    .insight-a{font-size:0.87rem;color:var(--muted);line-height:1.65;}
+
+    /* SKILLS DEMONSTRATED */
+    .skills-list{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+    .skill-row{display:flex;align-items:center;gap:16px;}
+    .skill-row-name{font-size:0.85rem;font-weight:500;min-width:200px;color:var(--text);}
+    .skill-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+    .skill-bar{height:100%;background:linear-gradient(to right,var(--accent2),var(--accent));border-radius:2px;}
+
+    /* NEXT PREV */
+    .project-nav{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:80px;padding-top:40px;border-top:1px solid var(--border);}
+    .project-nav-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-decoration:none;transition:border-color .3s,transform .3s;display:flex;flex-direction:column;gap:6px;}
+    .project-nav-card:hover{border-color:rgba(0,200,255,0.25);transform:translateY(-3px);}
+    .pnc-dir{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+    .pnc-title{font-family:var(--font-head);font-size:0.95rem;font-weight:700;}
+    .pnc-arrow{color:var(--accent);font-size:1.1rem;margin-top:4px;}
+    .back-to-portfolio{display:flex;justify-content:center;margin-top:60px;}
+
+    /* FOOTER */
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:32px 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .footer-logo{font-family:var(--font-head);font-weight:800;font-size:1rem;color:var(--text);text-decoration:none;}
+    .footer-logo span{color:var(--accent);}
+    .footer-copy{font-size:0.8rem;color:var(--muted);}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+    .fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease;}
+    .fade-up.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:768px){.project-nav{grid-template-columns:1fr;}.hero-meta{gap:20px;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">data<span>.</span>portfolio</a>
+  <a href="index.html#projets" class="nav-back">← Retour aux projets</a>
+</nav>
+
+<!-- HERO -->
+<div class="project-hero">
+  <div class="hero-grid-lines"></div>
+  <div class="project-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Portfolio</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Superstore Sales Performance</span>
+    </div>
+    <div class="project-domain-tag">📦 Ventes & Commerce</div>
+    <h1>Superstore <em>Sales</em><br>Performance</h1>
+    <p class="project-hero-desc">Dashboard de pilotage commercial construit sur le dataset Sample – Superstore. De la donnée brute CSV à un rapport Power BI structuré, capable de répondre aux questions business clés sur la rentabilité, les tendances et les pertes.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Outils</span>
+        <div class="meta-value">
+          <span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Power Query</span><span class="chip">Excel</span>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Domaine</span>
+        <span class="meta-value">Commerce & Ventes</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Statut</span>
+        <span class="meta-value" style="color:var(--gold);">⏳ En cours</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Pages dashboard</span>
+        <span class="meta-value">2 pages</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="project-content">
+
+  <!-- CONTEXTE -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Contexte</div>
+    <div class="section-title">Le <em>problème</em> métier</div>
+    <p>Le dataset <strong>Sample – Superstore</strong> est un fichier CSV classique de ventes retail : commandes, profits, remises, clients, produits, régions et dates. L'objectif est de construire un <strong>socle BI complet</strong> et de répondre à des questions business concrètes :</p>
+    <p>Quelles sont nos ventes globales ? Sommes-nous rentables ? Comment évolue la performance dans le temps ? <strong>Où se situent les pertes</strong> — remises excessives, régions sous-performantes, catégories à risque ?</p>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">📊</span>
+      <span class="visual-placeholder-text">Aperçu du dashboard — capture à venir</span>
+    </div>
+    <p class="visual-caption">Page "Overview KPI" — Sales, Profit, Marge, Orders, YTD</p>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Démarche</div>
+    <div class="section-title">Le <em>processus</em> étape par étape</div>
+    <div class="process-timeline">
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 01</div>
+          <div class="tl-step-title">Contrôle qualité & typage (Power Query)</div>
+          <p class="tl-step-desc">Correction des types : dates au bon format, décimales pour les montants, <code>code postal</code> converti en texte pour éviter les erreurs d'agrégation. Vérification des valeurs nulles et des doublons.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 02</div>
+          <div class="tl-step-title">Modélisation — Table Calendrier</div>
+          <p class="tl-step-desc">Création d'une <code>DimCalendrier</code> et mise en relation avec <code>Fact_Sales[Order Date]</code>. Cette relation est indispensable pour activer les fonctions de <strong>Time Intelligence</strong> DAX.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 03</div>
+          <div class="tl-step-title">Mesures DAX — KPI robustes</div>
+          <p class="tl-step-desc">Calculs sécurisés avec <code>DIVIDE()</code>, time intelligence avec <code>TOTALYTD</code> et <code>SAMEPERIODLASTYEAR</code>. Mesures réutilisables rangées dans une table dédiée.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 04</div>
+          <div class="tl-step-title">Dashboard — Visualisation orientée pilotage</div>
+          <p class="tl-step-desc">Cartes KPI, tendances mensuelles, comparaisons N-1. Segments de filtrage par année, région, catégorie et mode d'expédition. Analyse de l'impact des remises sur la rentabilité.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Indicateurs</div>
+    <div class="section-title">Les <em>KPIs</em> construits</div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-icon">💰</span>
+        <div class="kpi-name">Total Sales</div>
+        <div class="kpi-formula">SUM(Sales)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">📈</span>
+        <div class="kpi-name">Total Profit</div>
+        <div class="kpi-formula">SUM(Profit)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">%</span>
+        <div class="kpi-name">Marge %</div>
+        <div class="kpi-formula">DIVIDE(Profit, Sales)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">📦</span>
+        <div class="kpi-name">Nb Commandes</div>
+        <div class="kpi-formula">DISTINCTCOUNT(OrderID)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">📅</span>
+        <div class="kpi-name">Sales YTD</div>
+        <div class="kpi-formula">TOTALYTD(Sales, Date)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🔁</span>
+        <div class="kpi-name">Sales N-1</div>
+        <div class="kpi-formula">SAMEPERIODLASTYEAR</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🚚</span>
+        <div class="kpi-name">Délai livraison</div>
+        <div class="kpi-formula">Ship Date - Order Date</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🔻</span>
+        <div class="kpi-name">Impact Remise</div>
+        <div class="kpi-formula">Profit par niveau discount</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISUELS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Dashboard</div>
+    <div class="section-title">Les <em>pages</em> du rapport</div>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">🗺️</span>
+      <span class="visual-placeholder-text">Page 1 — Overview KPI + Tendances mensuelles</span>
+    </div>
+    <p class="visual-caption">Vue d'ensemble : Sales, Profit, Marge, Orders, évolution YTD vs N-1</p>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">📉</span>
+      <span class="visual-placeholder-text">Page 2 — Analyse Rentabilité & Remises</span>
+    </div>
+    <p class="visual-caption">Profit selon le niveau de remise, contribution par région / catégorie / produit, Top Pareto 80/20</p>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Insights</div>
+    <div class="section-title">Questions <em>auxquelles répond</em> le dashboard</div>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-q">📊 Performance globale</div>
+        <div class="insight-a">Quel est le niveau de ventes et de profit global ? Comment évoluent-ils par rapport à l'année précédente ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">📍 Contribution territoriale</div>
+        <div class="insight-a">Quelles régions et catégories contribuent le plus au CA et au profit ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">💸 Impact des remises</div>
+        <div class="insight-a">Est-ce que certaines remises dégradent fortement la rentabilité ? Quel seuil de remise devient problématique ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">🚚 Logistique</div>
+        <div class="insight-a">Quel est le délai moyen de livraison selon le mode d'expédition ? Y a-t-il des optimisations possibles ?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Compétences</div>
+    <div class="section-title">Ce que ce projet <em>démontre</em></div>
+    <div class="skills-list">
+      <div class="skill-row">
+        <span class="skill-row-name">Power Query — Nettoyage & typage</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">Modélisation — Calendrier & Relations</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">DAX — KPI & Time Intelligence</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">DataViz — Storytelling business</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+      </div>
+    </div>
+    <div class="tools-row" style="margin-top:28px;">
+      <div class="tool-badge"><span class="tool-dot" style="background:#f5b942;"></span>Power BI Desktop</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#00c8ff;"></span>DAX</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#0077ff;"></span>Power Query (M)</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#22c55e;"></span>Excel</div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="project-nav fade-up">
+    <div></div>
+    <a href="projet-accidents.html" class="project-nav-card" style="text-align:right;">
+      <span class="pnc-dir">Projet suivant →</span>
+      <span class="pnc-title">Analyse Accidents Routiers France 2024</span>
+      <span class="pnc-arrow">→</span>
+    </a>
+  </div>
+  <div class="back-to-portfolio">
+    <a href="index.html#projets" class="btn-outline">← Retour au portfolio</a>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">data<span>.</span>portfolio</a>
+  <p class="footer-copy">© 2025 — Portfolio Data Analyst & Power BI</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*100); obs.unobserve(e.target); } });
+  }, {threshold:0.1});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

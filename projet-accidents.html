@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accidents Routiers France 2024 — Data Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1e28;
+      --accent:#ff6b35; --accent2:#ff3d00; --gold:#f5b942;
+      --text:#e8eaf0; --muted:#8890a4;
+      --border:rgba(255,255,255,0.07); --card-bg:rgba(255,255,255,0.03);
+      --radius:14px; --font-head:'Syne',sans-serif; --font-body:'DM Sans',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;}
+    ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:var(--bg);} ::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:3px;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;backdrop-filter:blur(20px);background:rgba(13,15,20,0.9);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--text);text-decoration:none;}
+    .nav-logo span{color:var(--accent);}
+    .nav-back{display:flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color .2s;}
+    .nav-back:hover{color:var(--accent);}
+
+    .project-hero{
+      min-height:55vh; display:flex; align-items:flex-end;
+      padding:120px 5vw 60px;
+      background: linear-gradient(160deg, #150a08 0%, #2a1005 40%, #3d1500 100%);
+      position:relative; overflow:hidden;
+    }
+    .project-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,61,0,0.18) 0%, transparent 70%);}
+    .hero-grid-lines{position:absolute;inset:0;opacity:0.04;background-image:linear-gradient(rgba(255,107,53,1) 1px, transparent 1px),linear-gradient(90deg, rgba(255,107,53,1) 1px, transparent 1px);background-size:60px 60px;}
+    .project-hero-content{position:relative;z-index:1;max-width:780px;}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);margin-bottom:20px;}
+    .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;} .breadcrumb a:hover{color:var(--accent);}
+    .project-domain-tag{display:inline-flex;align-items:center;gap:8px;font-size:0.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(255,107,53,0.3);padding:5px 14px;border-radius:50px;margin-bottom:20px;}
+    .project-hero h1{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.8rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:18px;}
+    .project-hero h1 em{font-style:normal;color:var(--accent);}
+    .project-hero-desc{font-size:1rem;color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:32px;}
+    .hero-meta{display:flex;gap:32px;flex-wrap:wrap;}
+    .meta-item{display:flex;flex-direction:column;gap:4px;}
+    .meta-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+    .meta-value{font-family:var(--font-head);font-size:0.95rem;font-weight:700;color:var(--text);}
+    .meta-value .chip{display:inline-block;background:rgba(255,61,0,0.15);border:1px solid rgba(255,61,0,0.3);color:var(--accent);font-size:0.75rem;padding:2px 10px;border-radius:20px;margin:2px 3px 2px 0;font-family:var(--font-body);font-weight:500;}
+
+    .project-content{max-width:900px;margin:0 auto;padding:80px 5vw;}
+    .content-section{margin-bottom:72px;}
+    .section-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+    .section-title{font-family:var(--font-head);font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:24px;}
+    .section-title em{font-style:normal;color:var(--accent);}
+    p{color:var(--muted);font-size:0.95rem;line-height:1.8;margin-bottom:14px;}
+    p strong{color:var(--text);font-weight:500;}
+
+    .visual-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;margin:32px 0;position:relative;overflow:hidden;transition:border-color .3s;}
+    .visual-block:hover{border-color:rgba(255,107,53,0.25);}
+    .visual-block::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,61,0,0.05) 0%,transparent 60%);}
+    .visual-placeholder-icon{font-size:2.5rem;opacity:0.4;}
+    .visual-placeholder-text{font-size:0.82rem;color:var(--muted);font-style:italic;}
+    .visual-caption{font-size:0.78rem;color:var(--muted);text-align:center;margin-top:-20px;margin-bottom:32px;font-style:italic;}
+
+    /* DATA SOURCES */
+    .data-sources{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:16px;}
+    .data-source-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative;overflow:hidden;}
+    .data-source-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);}
+    .ds-name{font-family:var(--font-head);font-size:0.9rem;font-weight:700;margin-bottom:6px;}
+    .ds-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;}
+    .ds-key{font-size:0.72rem;color:var(--accent);margin-top:8px;font-family:monospace;}
+
+    .process-timeline{display:flex;flex-direction:column;gap:0;margin-top:8px;}
+    .timeline-step{display:grid;grid-template-columns:48px 1fr;gap:0 24px;}
+    .tl-left{display:flex;flex-direction:column;align-items:center;}
+    .tl-dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));flex-shrink:0;margin-top:4px;box-shadow:0 0 12px rgba(255,61,0,0.4);}
+    .tl-line{width:1px;background:var(--border);flex:1;margin:6px 0;}
+    .tl-body{padding-bottom:36px;}
+    .tl-step-num{font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+    .tl-step-title{font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px;}
+    .tl-step-desc{font-size:0.87rem;color:var(--muted);line-height:1.7;}
+    .tl-step-desc code{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.2);color:var(--accent);padding:1px 7px;border-radius:4px;font-size:0.82rem;}
+
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:24px 0;}
+    .kpi-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .3s,transform .3s;}
+    .kpi-card:hover{border-color:rgba(255,107,53,0.25);transform:translateY(-3px);}
+    .kpi-icon{font-size:1.4rem;margin-bottom:10px;display:block;}
+    .kpi-name{font-size:0.75rem;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .kpi-formula{font-size:0.82rem;color:var(--text);font-family:monospace;background:rgba(255,107,53,0.06);padding:4px 8px;border-radius:6px;display:inline-block;}
+
+    .insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:8px;}
+    .insight-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;border-left:3px solid var(--accent);}
+    .insight-q{font-size:0.82rem;font-weight:600;color:var(--accent);margin-bottom:8px;}
+    .insight-a{font-size:0.87rem;color:var(--muted);line-height:1.65;}
+
+    .tools-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+    .tool-badge{display:flex;align-items:center;gap:8px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:0.83rem;transition:border-color .2s;}
+    .tool-badge:hover{border-color:rgba(255,107,53,0.3);}
+    .tool-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+    .skills-list{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+    .skill-row{display:flex;align-items:center;gap:16px;}
+    .skill-row-name{font-size:0.85rem;font-weight:500;min-width:220px;color:var(--text);}
+    .skill-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+    .skill-bar{height:100%;background:linear-gradient(to right,var(--accent2),var(--accent));border-radius:2px;}
+
+    .project-nav{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:80px;padding-top:40px;border-top:1px solid var(--border);}
+    .project-nav-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-decoration:none;transition:border-color .3s,transform .3s;display:flex;flex-direction:column;gap:6px;}
+    .project-nav-card:hover{border-color:rgba(255,107,53,0.25);transform:translateY(-3px);}
+    .pnc-dir{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+    .pnc-title{font-family:var(--font-head);font-size:0.95rem;font-weight:700;}
+    .pnc-arrow{color:var(--accent);font-size:1.1rem;margin-top:4px;}
+    .back-to-portfolio{display:flex;justify-content:center;margin-top:60px;}
+    .btn-outline{border:1px solid var(--border);color:var(--text);padding:12px 28px;border-radius:50px;font-family:var(--font-body);font-size:0.88rem;font-weight:500;text-decoration:none;transition:border-color .2s,color .2s;display:inline-flex;align-items:center;gap:8px;}
+    .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:32px 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .footer-logo{font-family:var(--font-head);font-weight:800;font-size:1rem;color:var(--text);text-decoration:none;}
+    .footer-logo span{color:var(--accent);}
+    .footer-copy{font-size:0.8rem;color:var(--muted);}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+    .fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease;}
+    .fade-up.visible{opacity:1;transform:translateY(0);}
+
+    /* Schema star visual */
+    .star-schema{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:32px;margin:24px 0;display:flex;flex-direction:column;align-items:center;gap:16px;}
+    .schema-center{background:linear-gradient(135deg,rgba(255,61,0,0.2),rgba(255,107,53,0.1));border:2px solid var(--accent);border-radius:12px;padding:14px 24px;font-family:var(--font-head);font-weight:700;font-size:0.95rem;text-align:center;}
+    .schema-dims{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+    .schema-dim{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:0.8rem;color:var(--muted);text-align:center;}
+    .schema-dim strong{color:var(--text);display:block;font-family:var(--font-head);font-size:0.85rem;}
+    .schema-arrow{color:var(--muted);font-size:0.8rem;}
+
+    @media(max-width:768px){.project-nav{grid-template-columns:1fr;}.hero-meta{gap:20px;}.data-sources{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">data<span>.</span>portfolio</a>
+  <a href="index.html#projets" class="nav-back">← Retour aux projets</a>
+</nav>
+
+<div class="project-hero">
+  <div class="hero-grid-lines"></div>
+  <div class="project-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Portfolio</a>
+      <span style="color:var(--border);">/</span>
+      <span>Accidents Routiers France 2024</span>
+    </div>
+    <div class="project-domain-tag">🚗 Sécurité Routière & Données Publiques</div>
+    <h1>Accidents Routiers<br><em>France 2024</em></h1>
+    <p class="project-hero-desc">Dashboard interactif construit à partir des données publiques d'accidentalité BAAC 2024. 4 tables CSV, un modèle en étoile, et des KPIs de gravité pour comprendre les facteurs de risque sur les routes françaises.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Outils</span>
+        <div class="meta-value">
+          <span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Power Query</span>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Source données</span>
+        <span class="meta-value">data.gouv.fr (BAAC)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Tables</span>
+        <span class="meta-value">4 fichiers CSV + DimDate</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Statut</span>
+        <span class="meta-value" style="color:var(--gold);">⏳ En cours</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="project-content">
+
+  <!-- CONTEXTE -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Contexte</div>
+    <div class="section-title">Des données publiques au <em>dashboard décisionnel</em></div>
+    <p>Les données <strong>BAAC (Bulletin d'Analyse des Accidents Corporels)</strong> sont publiées chaque année par le gouvernement français. Pour 2024, elles couvrent l'ensemble des accidents corporels de la circulation, répartis en 4 tables distinctes.</p>
+    <p>L'objectif est de transformer ces fichiers bruts en un <strong>modèle analytique fiable</strong> pour produire des KPIs et visualisations permettant de comprendre les facteurs de risque, la gravité des accidents, et les profils des victimes.</p>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">🗺️</span>
+      <span class="visual-placeholder-text">Carte de chaleur des accidents par département — capture à venir</span>
+    </div>
+    <p class="visual-caption">Vue géographique — Densité d'accidents et taux de mortalité par département</p>
+  </div>
+
+  <!-- DONNÉES -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Données</div>
+    <div class="section-title">Les <em>4 tables</em> du dataset BAAC</div>
+    <div class="data-sources">
+      <div class="data-source-card">
+        <div class="ds-name">🔴 Accidents</div>
+        <div class="ds-desc">Caractéristiques de l'accident : date, heure, localisation, conditions météo, éclairage, agglomération.</div>
+        <div class="ds-key">Clé : Num_Acc (1 ligne = 1 accident)</div>
+      </div>
+      <div class="data-source-card">
+        <div class="ds-name">👤 Usagers</div>
+        <div class="ds-desc">Profil de chaque personne impliquée : rôle (conducteur/passager/piéton), gravité, sexe, âge.</div>
+        <div class="ds-key">Clé : Num_Acc + id_usager</div>
+      </div>
+      <div class="data-source-card">
+        <div class="ds-name">🚗 Véhicules</div>
+        <div class="ds-desc">Type de véhicule, catégorie, manœuvre effectuée avant l'accident, obstacle heurté.</div>
+        <div class="ds-key">Clé : Num_Acc + id_vehicule</div>
+      </div>
+      <div class="data-source-card">
+        <div class="ds-name">🛣️ Lieux</div>
+        <div class="ds-desc">Caractéristiques routières : type de route, infrastructure, surface, vitesse maximale autorisée.</div>
+        <div class="ds-key">⚠️ Plusieurs lignes par accident possible</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODÉLISATION -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Modélisation</div>
+    <div class="section-title">Schéma en <em>étoile</em> Power BI</div>
+    <p>La clé <strong>Num_Acc</strong> relie toutes les tables. La table Lieux posant un problème de doublonnage (plusieurs lignes par accident), une <strong>stratégie d'agrégation</strong> a été mise en place pour éviter les erreurs de comptage dans les visuels.</p>
+    <div class="star-schema">
+      <div class="schema-dims">
+        <div class="schema-dim"><strong>DimDate</strong>Calendrier</div>
+        <div class="schema-dim"><strong>Usagers</strong>Profils victimes</div>
+      </div>
+      <div class="schema-arrow">↓</div>
+      <div class="schema-center">⭐ Accidents_2024<br><small style="font-weight:400;font-size:0.75rem;opacity:0.8;">Table centrale — 1 ligne = 1 accident</small></div>
+      <div class="schema-arrow">↓</div>
+      <div class="schema-dims">
+        <div class="schema-dim"><strong>Véhicules</strong>Types & manœuvres</div>
+        <div class="schema-dim"><strong>Lieux</strong>Infra routière ⚠️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Démarche</div>
+    <div class="section-title">Nettoyage & <em>transformations</em></div>
+    <div class="process-timeline">
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 01</div>
+          <div class="tl-step-title">Typage & valeurs manquantes</div>
+          <p class="tl-step-desc">Les IDs en texte, codes en entiers, mesures en numériques. Les valeurs non renseignées comme <code>-1</code>, <code>0</code>, <code>9</code> sont converties en null ou libellé "Inconnu".</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 02</div>
+          <div class="tl-step-title">Colonnes libellées pour la dataviz</div>
+          <p class="tl-step-desc">Transformation des codes bruts en valeurs lisibles : <code>catu</code> → Conducteur / Passager / Piéton, <code>agg</code> → En agglomération / Hors agglomération, <code>lum</code> → Jour / Aube / Nuit.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 03</div>
+          <div class="tl-step-title">Feature engineering — Champs KPI-ready</div>
+          <p class="tl-step-desc">Création de flags : <code>est_tué</code>, <code>est_blessé_grave</code>. Création de classes de vitesse, champs de segmentation jour/nuit, agglo/hors agglo prêts pour les slicers.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 04</div>
+          <div class="tl-step-title">Gestion de la table Lieux (multi-lignes)</div>
+          <p class="tl-step-desc">Stratégie d'agrégation par <code>Num_Acc</code> pour sélectionner une ligne de référence par accident, évitant le doublonnage des accidents dans les visuels croisés.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Indicateurs</div>
+    <div class="section-title">Les <em>KPIs</em> de gravité</div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-icon">🚨</span>
+        <div class="kpi-name">Nb Accidents</div>
+        <div class="kpi-formula">DISTINCTCOUNT(Num_Acc)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">💀</span>
+        <div class="kpi-name">Tués</div>
+        <div class="kpi-formula">COUNTROWS(filtre grav=2)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🏥</span>
+        <div class="kpi-name">Blessés graves</div>
+        <div class="kpi-formula">COUNTROWS(filtre grav=3)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">📊</span>
+        <div class="kpi-name">Taux mortalité</div>
+        <div class="kpi-formula">DIVIDE(Tués, Nb Accidents)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🌙</span>
+        <div class="kpi-name">% Accidents nuit</div>
+        <div class="kpi-formula">filtre lum = nuit / total</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🏙️</span>
+        <div class="kpi-name">Agglo vs Hors</div>
+        <div class="kpi-formula">filtre agg = 1 vs 2</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PAGES -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Dashboard</div>
+    <div class="section-title">Les <em>4 pages</em> du rapport</div>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">📊</span>
+      <span class="visual-placeholder-text">Page 1 — Vue d'ensemble KPIs + Tendances mensuelles</span>
+    </div>
+    <p class="visual-caption">Accidents totaux, tués, blessés graves, taux de mortalité, évolution sur l'année</p>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">🗺️</span>
+      <span class="visual-placeholder-text">Page 2 — Analyse territoriale par département</span>
+    </div>
+    <p class="visual-caption">Cartographie des accidents, densité par région, top départements accidentogènes</p>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">🌙</span>
+      <span class="visual-placeholder-text">Page 3 — Conditions d'accidents (éclairage, agglo, route, surface)</span>
+    </div>
+    <p class="visual-caption">Analyse des facteurs : jour/nuit, type de route, infrastructure, vitesse maximale</p>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">👤</span>
+      <span class="visual-placeholder-text">Page 4 — Profils des victimes & gravité</span>
+    </div>
+    <p class="visual-caption">Conducteur / Passager / Piéton, répartition par gravité, situations à risque</p>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Analyses</div>
+    <div class="section-title">Axes d'<em>exploration</em></div>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-q">🌙 Facteur éclairage</div>
+        <div class="insight-a">Les accidents de nuit sont-ils proportionnellement plus graves que ceux de jour ? Quel est le taux de mortalité selon les conditions d'éclairage ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">🏙️ Agglo vs Hors agglo</div>
+        <div class="insight-a">La gravité diffère-t-elle significativement en agglomération et hors agglomération ? Où les piétons sont-ils les plus exposés ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">🛣️ Type de route</div>
+        <div class="insight-a">Autoroutes, routes nationales, départementales — quel type de voie concentre le plus d'accidents graves malgré les limitations de vitesse ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">📅 Saisonnalité</div>
+        <div class="insight-a">Y a-t-il des pics mensuels ou hebdomadaires ? Les weekends et les mois d'été présentent-ils des profils d'accidentalité spécifiques ?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Compétences</div>
+    <div class="section-title">Ce que ce projet <em>démontre</em></div>
+    <div class="skills-list">
+      <div class="skill-row">
+        <span class="skill-row-name">Data Modeling — Schéma en étoile</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">Power Query — Nettoyage & normalisation</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">DAX — Mesures KPI, filtres, ratios</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">DataViz — Pages lisibles & storytelling</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">Gestion tables complexes (multi-lignes)</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:70%"></div></div>
+      </div>
+    </div>
+    <div class="tools-row" style="margin-top:28px;">
+      <div class="tool-badge"><span class="tool-dot" style="background:#f5b942;"></span>Power BI Desktop</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#ff6b35;"></span>DAX</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#ff3d00;"></span>Power Query (M)</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#8890a4;"></span>data.gouv.fr (BAAC)</div>
+    </div>
+  </div>
+
+  <div class="project-nav fade-up">
+    <a href="projet-superstore.html" class="project-nav-card">
+      <span class="pnc-dir">← Projet précédent</span>
+      <span class="pnc-title">Superstore Sales Performance</span>
+      <span class="pnc-arrow">←</span>
+    </a>
+    <a href="projet-films.html" class="project-nav-card" style="text-align:right;">
+      <span class="pnc-dir">Projet suivant →</span>
+      <span class="pnc-title">Analyse Films & Box-Office</span>
+      <span class="pnc-arrow">→</span>
+    </a>
+  </div>
+  <div class="back-to-portfolio">
+    <a href="index.html#projets" class="btn-outline">← Retour au portfolio</a>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">data<span>.</span>portfolio</a>
+  <p class="footer-copy">© 2025 — Portfolio Data Analyst & Power BI</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*100); obs.unobserve(e.target); } });
+  }, {threshold:0.1});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analyse Films & Box-Office — Data Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1e28;
+      --accent:#c084fc; --accent2:#9333ea; --gold:#f5b942;
+      --text:#e8eaf0; --muted:#8890a4;
+      --border:rgba(255,255,255,0.07); --card-bg:rgba(255,255,255,0.03);
+      --radius:14px; --font-head:'Syne',sans-serif; --font-body:'DM Sans',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;}
+    ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:var(--bg);} ::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:3px;}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;backdrop-filter:blur(20px);background:rgba(13,15,20,0.9);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--font-head);font-weight:800;font-size:1.1rem;color:var(--text);text-decoration:none;}
+    .nav-logo span{color:var(--accent);}
+    .nav-back{display:flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;font-size:0.85rem;transition:color .2s;}
+    .nav-back:hover{color:var(--accent);}
+
+    .project-hero{
+      min-height:55vh; display:flex; align-items:flex-end;
+      padding:120px 5vw 60px;
+      background: linear-gradient(160deg, #0f0a18 0%, #1a0d2e 40%, #2d1a4a 100%);
+      position:relative; overflow:hidden;
+    }
+    .project-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 40%, rgba(147,51,234,0.2) 0%, transparent 70%);}
+    .hero-grid-lines{position:absolute;inset:0;opacity:0.04;background-image:linear-gradient(rgba(192,132,252,1) 1px, transparent 1px),linear-gradient(90deg, rgba(192,132,252,1) 1px, transparent 1px);background-size:60px 60px;}
+
+    /* film strip decoration */
+    .filmstrip{position:absolute;top:0;right:5vw;width:60px;height:100%;opacity:0.06;display:flex;flex-direction:column;gap:8px;padding:20px 0;}
+    .filmstrip-hole{width:100%;aspect-ratio:1;background:white;border-radius:4px;}
+
+    .project-hero-content{position:relative;z-index:1;max-width:780px;}
+    .breadcrumb{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);margin-bottom:20px;}
+    .breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;} .breadcrumb a:hover{color:var(--accent);}
+    .project-domain-tag{display:inline-flex;align-items:center;gap:8px;font-size:0.75rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(192,132,252,0.3);padding:5px 14px;border-radius:50px;margin-bottom:20px;}
+    .project-hero h1{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.8rem);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:18px;}
+    .project-hero h1 em{font-style:normal;color:var(--accent);}
+    .project-hero-desc{font-size:1rem;color:var(--muted);line-height:1.75;max-width:600px;margin-bottom:32px;}
+    .hero-meta{display:flex;gap:32px;flex-wrap:wrap;}
+    .meta-item{display:flex;flex-direction:column;gap:4px;}
+    .meta-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+    .meta-value{font-family:var(--font-head);font-size:0.95rem;font-weight:700;color:var(--text);}
+    .meta-value .chip{display:inline-block;background:rgba(147,51,234,0.15);border:1px solid rgba(147,51,234,0.3);color:var(--accent);font-size:0.75rem;padding:2px 10px;border-radius:20px;margin:2px 3px 2px 0;font-family:var(--font-body);font-weight:500;}
+
+    .project-content{max-width:900px;margin:0 auto;padding:80px 5vw;}
+    .content-section{margin-bottom:72px;}
+    .section-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+    .section-title{font-family:var(--font-head);font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:24px;}
+    .section-title em{font-style:normal;color:var(--accent);}
+    p{color:var(--muted);font-size:0.95rem;line-height:1.8;margin-bottom:14px;}
+    p strong{color:var(--text);font-weight:500;}
+
+    .visual-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;margin:32px 0;position:relative;overflow:hidden;transition:border-color .3s;}
+    .visual-block:hover{border-color:rgba(192,132,252,0.25);}
+    .visual-block::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(147,51,234,0.05) 0%,transparent 60%);}
+    .visual-placeholder-icon{font-size:2.5rem;opacity:0.4;}
+    .visual-placeholder-text{font-size:0.82rem;color:var(--muted);font-style:italic;}
+    .visual-caption{font-size:0.78rem;color:var(--muted);text-align:center;margin-top:-20px;margin-bottom:32px;font-style:italic;}
+
+    .process-timeline{display:flex;flex-direction:column;gap:0;margin-top:8px;}
+    .timeline-step{display:grid;grid-template-columns:48px 1fr;gap:0 24px;}
+    .tl-left{display:flex;flex-direction:column;align-items:center;}
+    .tl-dot{width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));flex-shrink:0;margin-top:4px;box-shadow:0 0 12px rgba(147,51,234,0.4);}
+    .tl-line{width:1px;background:var(--border);flex:1;margin:6px 0;}
+    .tl-body{padding-bottom:36px;}
+    .tl-step-num{font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+    .tl-step-title{font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px;}
+    .tl-step-desc{font-size:0.87rem;color:var(--muted);line-height:1.7;}
+    .tl-step-desc code{background:rgba(192,132,252,0.08);border:1px solid rgba(192,132,252,0.2);color:var(--accent);padding:1px 7px;border-radius:4px;font-size:0.82rem;}
+
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:24px 0;}
+    .kpi-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .3s,transform .3s;}
+    .kpi-card:hover{border-color:rgba(192,132,252,0.25);transform:translateY(-3px);}
+    .kpi-icon{font-size:1.4rem;margin-bottom:10px;display:block;}
+    .kpi-name{font-size:0.75rem;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+    .kpi-formula{font-size:0.82rem;color:var(--text);font-family:monospace;background:rgba(192,132,252,0.06);padding:4px 8px;border-radius:6px;display:inline-block;}
+
+    /* Dashboard pages grid */
+    .pages-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:24px 0;}
+    .page-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;}
+    .page-card:hover{border-color:rgba(192,132,252,0.25);transform:translateY(-3px);}
+    .page-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--accent2),var(--accent));}
+    .page-num{font-size:2rem;font-family:var(--font-head);font-weight:800;color:rgba(192,132,252,0.15);position:absolute;top:12px;right:16px;}
+    .page-name{font-family:var(--font-head);font-size:0.95rem;font-weight:700;margin-bottom:8px;}
+    .page-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+
+    /* Advanced section */
+    .advanced-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:16px;}
+    .advanced-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;border-left:3px solid var(--accent2);opacity:0.7;transition:opacity .2s;}
+    .advanced-card:hover{opacity:1;}
+    .adv-tag{font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent2);font-weight:600;margin-bottom:6px;}
+    .adv-title{font-family:var(--font-head);font-size:0.85rem;font-weight:700;margin-bottom:6px;}
+    .adv-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;}
+
+    .insights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:8px;}
+    .insight-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;border-left:3px solid var(--accent);}
+    .insight-q{font-size:0.82rem;font-weight:600;color:var(--accent);margin-bottom:8px;}
+    .insight-a{font-size:0.87rem;color:var(--muted);line-height:1.65;}
+
+    .skills-list{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+    .skill-row{display:flex;align-items:center;gap:16px;}
+    .skill-row-name{font-size:0.85rem;font-weight:500;min-width:240px;color:var(--text);}
+    .skill-bar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+    .skill-bar{height:100%;background:linear-gradient(to right,var(--accent2),var(--accent));border-radius:2px;}
+
+    .tools-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+    .tool-badge{display:flex;align-items:center;gap:8px;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:0.83rem;transition:border-color .2s;}
+    .tool-badge:hover{border-color:rgba(192,132,252,0.3);}
+    .tool-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+    .project-nav{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:80px;padding-top:40px;border-top:1px solid var(--border);}
+    .project-nav-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-decoration:none;transition:border-color .3s,transform .3s;display:flex;flex-direction:column;gap:6px;}
+    .project-nav-card:hover{border-color:rgba(192,132,252,0.25);transform:translateY(-3px);}
+    .pnc-dir{font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+    .pnc-title{font-family:var(--font-head);font-size:0.95rem;font-weight:700;}
+    .pnc-arrow{color:var(--accent);font-size:1.1rem;margin-top:4px;}
+    .back-to-portfolio{display:flex;justify-content:center;margin-top:60px;}
+    .btn-outline{border:1px solid var(--border);color:var(--text);padding:12px 28px;border-radius:50px;font-family:var(--font-body);font-size:0.88rem;font-weight:500;text-decoration:none;transition:border-color .2s,color .2s;display:inline-flex;align-items:center;gap:8px;}
+    .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:32px 5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    .footer-logo{font-family:var(--font-head);font-weight:800;font-size:1rem;color:var(--text);text-decoration:none;}
+    .footer-logo span{color:var(--accent);}
+    .footer-copy{font-size:0.8rem;color:var(--muted);}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+    .fade-up{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease;}
+    .fade-up.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:768px){.project-nav{grid-template-columns:1fr;}.hero-meta{gap:20px;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">data<span>.</span>portfolio</a>
+  <a href="index.html#projets" class="nav-back">← Retour aux projets</a>
+</nav>
+
+<div class="project-hero">
+  <div class="hero-grid-lines"></div>
+  <div class="filmstrip" aria-hidden="true">
+    <div class="filmstrip-hole"></div><div class="filmstrip-hole"></div>
+    <div class="filmstrip-hole"></div><div class="filmstrip-hole"></div>
+    <div class="filmstrip-hole"></div><div class="filmstrip-hole"></div>
+    <div class="filmstrip-hole"></div><div class="filmstrip-hole"></div>
+    <div class="filmstrip-hole"></div><div class="filmstrip-hole"></div>
+  </div>
+  <div class="project-hero-content">
+    <div class="breadcrumb">
+      <a href="index.html">Portfolio</a>
+      <span style="color:var(--border);">/</span>
+      <span>Analyse Films & Box-Office</span>
+    </div>
+    <div class="project-domain-tag">🎬 Cinéma & Business Intelligence</div>
+    <h1>Films & <em>Box-Office</em><br>Intelligence</h1>
+    <p class="project-hero-desc">Analyse d'un dataset de plus d'un million de films pour identifier ce qui fait le succès commercial : genres porteurs, ROI par réalisateur, relation budget ↔ revenus, saisonnalité des sorties.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Outils</span>
+        <div class="meta-value">
+          <span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Power Query</span><span class="chip">Python</span>
+        </div>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Volume données</span>
+        <span class="meta-value">1M+ films</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Pages dashboard</span>
+        <span class="meta-value">5 pages</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Statut</span>
+        <span class="meta-value" style="color:var(--gold);">⏳ En cours</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="project-content">
+
+  <!-- CONTEXTE -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Contexte</div>
+    <div class="section-title">Comprendre le <em>succès commercial</em> d'un film</div>
+    <p>Le dataset regroupe plus d'<strong>un million de films</strong> dans le monde, avec pour chaque titre : budget, revenus, popularité, notes, genres, réalisateurs, sociétés de production, date de sortie et langue d'origine.</p>
+    <p>L'objectif business est clair : construire un dashboard Power BI qui permette de répondre aux questions stratégiques d'un studio ou d'un investisseur — <strong>quels genres rapportent le plus ? Le budget garantit-il le succès ? Quand sortir un film pour maximiser les revenus ?</strong></p>
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">🎬</span>
+      <span class="visual-placeholder-text">Dashboard Global — KPIs + Revenus par genre + Évolution annuelle</span>
+    </div>
+    <p class="visual-caption">Vue d'ensemble : Total Revenue, Budget moyen, Profit, ROI, nombre de films</p>
+  </div>
+
+  <!-- DONNÉES & PRÉPARATION -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Préparation des données</div>
+    <div class="section-title">Nettoyage & <em>Feature Engineering</em></div>
+    <div class="process-timeline">
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 01</div>
+          <div class="tl-step-title">Nettoyage & standardisation</div>
+          <p class="tl-step-desc">Gestion des valeurs manquantes, budgets/revenus à 0 filtrés ou flagués. Typage des champs, uniformisation des dates, normalisation des noms de genres et de sociétés.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 02</div>
+          <div class="tl-step-title">Feature engineering — Variables calculées</div>
+          <p class="tl-step-desc">Création de <code>profit</code> (Revenue – Budget), <code>ROI</code> (Profit / Budget), <code>décennie</code>, <code>saison_sortie</code> (Hiver/Printemps/Été/Automne). Ces variables sont les leviers clés de l'analyse.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 03</div>
+          <div class="tl-step-title">Modélisation star schema — Many-to-Many</div>
+          <p class="tl-step-desc">Un film peut avoir plusieurs genres et plusieurs sociétés de production. Création de <strong>tables de liaison</strong> pour gérer ces relations many-to-many : <code>Film_Genre</code>, <code>Film_Company</code>.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="tl-left"><div class="tl-dot"></div></div>
+        <div class="tl-body">
+          <div class="tl-step-num">Étape 04</div>
+          <div class="tl-step-title">Mesures DAX — KPIs & analyses comparatives</div>
+          <p class="tl-step-desc">Mesures pour les KPIs principaux et analyses comparatives par période, par segment (blockbusters vs sleeper hits vs flops), et corrélations entre variables.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Indicateurs</div>
+    <div class="section-title">Les <em>KPIs</em> business</div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-icon">💰</span>
+        <div class="kpi-name">Total Revenue</div>
+        <div class="kpi-formula">SUM(revenue)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🎬</span>
+        <div class="kpi-name">Budget moyen</div>
+        <div class="kpi-formula">AVERAGE(budget)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">📈</span>
+        <div class="kpi-name">Profit</div>
+        <div class="kpi-formula">Revenue – Budget</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🎯</span>
+        <div class="kpi-name">ROI</div>
+        <div class="kpi-formula">DIVIDE(Profit, Budget)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">⭐</span>
+        <div class="kpi-name">Note moyenne</div>
+        <div class="kpi-formula">AVERAGE(vote_average)</div>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-icon">🎞️</span>
+        <div class="kpi-name">Nb Films</div>
+        <div class="kpi-formula">COUNTROWS(Films)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PAGES -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Dashboard</div>
+    <div class="section-title">Les <em>5 pages</em> du rapport</div>
+    <div class="pages-grid">
+      <div class="page-card">
+        <span class="page-num">01</span>
+        <div class="page-name">Dashboard Global</div>
+        <div class="page-desc">KPIs principaux, revenus par genre, évolution annuelle des performances.</div>
+      </div>
+      <div class="page-card">
+        <span class="page-num">02</span>
+        <div class="page-name">Analyse Genre</div>
+        <div class="page-desc">Revenu, ROI, volume de films — comparaison des performances par genre cinématographique.</div>
+      </div>
+      <div class="page-card">
+        <span class="page-num">03</span>
+        <div class="page-name">Réalisateurs & Production</div>
+        <div class="page-desc">Top 10 Revenue, Top 10 ROI, profils de performance des studios et réalisateurs.</div>
+      </div>
+      <div class="page-card">
+        <span class="page-num">04</span>
+        <div class="page-name">Analyse Financière</div>
+        <div class="page-desc">Budget vs Revenue, distribution du ROI, outliers, corrélations entre variables financières.</div>
+      </div>
+      <div class="page-card">
+        <span class="page-num">05</span>
+        <div class="page-name">Insights Business</div>
+        <div class="page-desc">Segmentation blockbusters / sleeper hits / flops, recommandations et conclusions actionnables.</div>
+      </div>
+    </div>
+
+    <div class="visual-block" style="margin-top:32px;">
+      <span class="visual-placeholder-icon">🏆</span>
+      <span class="visual-placeholder-text">Page Analyse Genre — Revenus & ROI par genre cinématographique</span>
+    </div>
+    <p class="visual-caption">Comparaison : Horreur (ROI élevé, budget faible) vs Action (Revenue élevé, budget massif)</p>
+
+    <div class="visual-block">
+      <span class="visual-placeholder-icon">💹</span>
+      <span class="visual-placeholder-text">Page Analyse Financière — Scatter Budget vs Revenue + Distribution ROI</span>
+    </div>
+    <p class="visual-caption">Corrélation budget / revenus, identification des outliers et films à fort ROI avec petit budget</p>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Questions business</div>
+    <div class="section-title">Ce que le dashboard <em>révèle</em></div>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-q">🎭 Genres porteurs</div>
+        <div class="insight-a">Quels genres génèrent le plus de revenus absolus ? Et lesquels ont le meilleur ROI relatif à leur budget ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">💰 Budget = succès ?</div>
+        <div class="insight-a">Un budget élevé garantit-il de meilleurs revenus ? Existe-t-il des films à petit budget avec un ROI exceptionnel ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">📅 Timing de sortie</div>
+        <div class="insight-a">Quelle saison ou période de l'année maximise les revenus ? Les sorties de fin d'année surperforment-elles ?</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-q">🎬 Studios & Réalisateurs</div>
+        <div class="insight-a">Quels studios ou réalisateurs présentent les meilleurs profils de performance sur la durée ?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÉVOLUTIONS AVANCÉES -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Évolution du projet</div>
+    <div class="section-title">Analyses <em>avancées</em> prévues</div>
+    <p>Ce projet est conçu pour intégrer progressivement des briques Data Science et Machine Learning au-delà du dashboard Power BI.</p>
+    <div class="advanced-grid">
+      <div class="advanced-card">
+        <div class="adv-tag">Machine Learning</div>
+        <div class="adv-title">Prédiction des notes</div>
+        <div class="adv-desc">Prédire le vote_average à partir de la popularité, du genre, du budget et de la durée.</div>
+      </div>
+      <div class="advanced-card">
+        <div class="adv-tag">Time Series</div>
+        <div class="adv-title">Tendances temporelles</div>
+        <div class="adv-desc">Analyse de saisonnalité, impact de la période de sortie sur les recettes, cycles décennaux.</div>
+      </div>
+      <div class="advanced-card">
+        <div class="adv-tag">Recommandation</div>
+        <div class="adv-title">Système de similarité</div>
+        <div class="adv-desc">Recommandation basée sur la similarité de genres, studios et langue d'origine.</div>
+      </div>
+      <div class="advanced-card">
+        <div class="adv-tag">NLP</div>
+        <div class="adv-title">Sentiment Analysis</div>
+        <div class="adv-desc">Analyse des résumés pour relier perception du public et performance commerciale.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="content-section fade-up">
+    <div class="section-eyebrow">Compétences</div>
+    <div class="section-title">Ce que ce projet <em>démontre</em></div>
+    <div class="skills-list">
+      <div class="skill-row">
+        <span class="skill-row-name">Power BI — Data modeling & DAX</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">Data Prep — Nettoyage & Feature Engineering</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">Many-to-Many — Tables de liaison</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">Analyse exploratoire — Segmentation & outliers</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div>
+      </div>
+      <div class="skill-row">
+        <span class="skill-row-name">DataViz — Storytelling 5 pages</span>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:85%"></div></div>
+      </div>
+    </div>
+    <div class="tools-row" style="margin-top:28px;">
+      <div class="tool-badge"><span class="tool-dot" style="background:#f5b942;"></span>Power BI Desktop</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#c084fc;"></span>DAX</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#9333ea;"></span>Power Query (M)</div>
+      <div class="tool-badge"><span class="tool-dot" style="background:#22c55e;"></span>Python (Pandas)</div>
+    </div>
+  </div>
+
+  <div class="project-nav fade-up">
+    <a href="projet-accidents.html" class="project-nav-card">
+      <span class="pnc-dir">← Projet précédent</span>
+      <span class="pnc-title">Accidents Routiers France 2024</span>
+      <span class="pnc-arrow">←</span>
+    </a>
+    <div></div>
+  </div>
+  <div class="back-to-portfolio">
+    <a href="index.html#projets" class="btn-outline">← Retour au portfolio</a>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">data<span>.</span>portfolio</a>
+  <p class="footer-copy">© 2025 — Portfolio Data Analyst & Power BI</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*100); obs.unobserve(e.target); } });
+  }, {threshold:0.1});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
