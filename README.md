@@ -53,8 +53,10 @@ Je suis actuellement en formation **Data Analyst**, avec un focus sur la créati
 
 ```
 Data-Portefolio/
-│
-├── index.html          # Site portfolio (single-file HTML/CSS/JS)
+├── index.html              ← Page d'accueil portfolio (single-file HTML/CSS/JS)
+├── projet-superstore.html  ← Page dédiée au projet Superstore
+├── projet-accidents.html   ← Page dédiée u projet Accidents routiers
+└── projet-films.html       ← Page dédiée au projet Films & Box-Office
 └── README.md           # Ce fichier
 ```
 
