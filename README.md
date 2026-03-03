@@ -62,8 +62,8 @@ Data-Portefolio/
 
 ## 📬 Contact
 
-- 💼 [LinkedIn](https://linkedin.com/in/votre-profil) ← *à remplacer*
-- 📧 votre@email.fr ← *à remplacer*
+- 💼 [LinkedIn](https://www.linkedin.com/in/steve-landry-kouokam-nono-18b175291/) 
+- 📧 nonostevelandry@gmail.com 
 
 ---
 
