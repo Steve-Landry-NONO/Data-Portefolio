@@ -20,7 +20,53 @@
             height: 100px; /* Taille souhaitée pour l'image */
             border-radius: 50%; /* Optionnel : pour un rendu circulaire */
             object-fit: cover; /* Optionnel : pour que l'image couvre la zone sans déformation */
-        }    
+        }  
+    .about-visual {
+    position: relative; /* Pour positionner les bulles par rapport au conteneur */
+}
+
+.about-img-bubble {
+    border-radius: 50%; /* Pour un rendu circulaire comme une bulle */
+    object-fit: cover; /* Pour que l'image couvre la zone sans déformation */
+    border: 2px solid white; /* Optionnel : pour un contour blanc */
+    overflow: hidden; /* Pour que l'image ne dépasse pas de la bulle */
+}
+
+/* Bulle centrale */
+.central-bubble {
+    width: 200px; /* Taille souhaitée pour la bulle centrale */
+    height: 200px; /* Taille souhaitée pour la bulle centrale */
+    z-index: 2; /* Pour que la bulle centrale soit au-dessus des autres */
+}
+
+/* Bulles plus petites */
+.small-bubble {
+    width: 100px; /* Taille souhaitée pour les bulles plus petites */
+    height: 100px; /* Taille souhaitée pour les bulles plus petites */
+    position: absolute; /* Pour positionner les bulles précisément */
+    z-index: 1; /* Pour que les bulles plus petites soient derrière la centrale */
+}
+
+/* Positionnement des quatre bulles plus petites */
+.bubble-1 {
+    top: 0;
+    left: 0;
+}
+
+.bubble-2 {
+    top: 0;
+    right: 0;
+}
+
+.bubble-3 {
+    bottom: 0;
+    left: 0;
+}
+
+.bubble-4 {
+    bottom: 0;
+    right: 0;
+}      
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
@@ -156,7 +202,7 @@
 <body>
 
   <nav>
-    <a href="#accueil" class="nav-logo">data<span>.</span>portfolio</a>
+    <a href="#accueil" class="nav-logo">Steve<span>.NONO<span>.dataViZ<span>.</span>portfolio</a>
     <ul class="nav-links">
       <li><a href="#competences">Compétences</a></li>
       <li><a href="#projets">Projets</a></li>
@@ -295,7 +341,7 @@
       <div class="about-visual fade-up">
         <!--div class="about-img-placeholder">🧑‍💻</div-->
         <img src="Gemini_Generated_Image_r4et1zr4et1zr4et.png" alt="Photo de profil">
-        <div class="about-badge"><span class="big">Power BI</span><span class="small">En formation</span></div>
+        <div class="about-badge"><span class="big">Power BI</span><span class="small">et moi vous accompagneons</span></div>
       </div>
       <div class="about-text fade-up">
         <div class="section-label">À propos</div>
