@@ -1,72 +1,25 @@
-# 📊 Data Portfolio — Power BI & Dataviz
+# Steve Landry — Data, IA & Product Engineering
 
-> Portfolio en ligne d'un Data Analyst en formation, spécialisé en **Power BI**, visualisation de données et analyse métier.
+Portfolio professionnel de Steve Landry KOUOKAM NONO, conçu comme une vitrine sélective de projets Data, Machine Learning, Data Engineering et AI Product.
 
-🌐 **[Voir le portfolio en ligne](https://steve-landry-nono.github.io/Data-Portefolio/)**
+## Positionnement
 
----
+Le site raconte une progression cohérente : **Data Analyst → Data Engineering → ML Engineering → AI/Data Product**. Il ne cherche pas à exposer tous les repositories, mais à présenter les réalisations les plus démonstratives.
 
-## 👤 À propos
+## Projets phares
 
-Je suis actuellement en formation **Data Analyst**, avec un focus sur la création de dashboards interactifs sous Power BI et l'analyse de données métier. Ce portfolio regroupe mes projets réalisés dans le cadre de ma montée en compétences.
+- SkipperNDT — ML/DL industriel
+- Career Intelligence — agents IA et knowledge engineering
+- Movies Data Platform — ELK, FastAPI et Docker
+- Fashion Money — AI Product et backend
+- Puissance 4 avec IA — Minimax et DQN
+- Data Engineering KFK — Airflow, Kafka et Spark
 
----
+## Utilisation
 
-## 🗂️ Projets présentés
+Le site est statique et ne nécessite aucune dépendance : ouvrir `index.html` ou activer GitHub Pages sur la branche principale.
 
-### 🧑‍💼 Dashboard Ressources Humaines
-- **Objectif** : Analyser le taux de turnover d'une entreprise sur l'année 2022
-- **Source** : Dataset Kaggle (données RH fictives)
-- **Process** : Nettoyage Excel → Power Query → Modélisation → Dashboard Power BI
-- **Outils** : `Power BI` `Excel` `DAX`
+## Contact
 
----
-
-### 📈 Analyse des Ventes
-- **Objectif** : Suivi des performances commerciales par région, produit et période
-- **Process** : Extraction SQL → Nettoyage → Dashboard multi-pages
-- **Outils** : `Power BI` `SQL`
-
----
-
-### 💹 Tableau de Bord Financier
-- **Objectif** : Suivi budgétaire — revenus vs dépenses, marges, prévisions
-- **Process** : Power Query → Modélisation en étoile → Visuels dynamiques
-- **Outils** : `Power BI` `Power Query`
-
----
-
-## 🛠️ Stack & Compétences
-
-| Outil | Niveau |
-|---|---|
-| Power BI Desktop | ⭐⭐⭐⭐ |
-| DAX | ⭐⭐⭐ |
-| Power Query (M) | ⭐⭐⭐⭐ |
-| Excel Avancé | ⭐⭐⭐⭐ |
-| SQL | ⭐⭐⭐ |
-| Python (Pandas) | ⭐⭐ |
-
----
-
-## 🚀 Structure du repo
-
-```
-Data-Portefolio/
-├── index.html              ← Page d'accueil portfolio (single-file HTML/CSS/JS)
-├── projet-superstore.html  ← Page dédiée au projet Superstore
-├── projet-accidents.html   ← Page dédiée u projet Accidents routiers
-└── projet-films.html       ← Page dédiée au projet Films & Box-Office
-└── README.md           # Ce fichier
-```
-
----
-
-## 📬 Contact
-
-- 💼 [LinkedIn](https://www.linkedin.com/in/steve-landry-kouokam-nono-18b175291/) 
-- 📧 nonostevelandry@gmail.com 
-
----
-
-*Portfolio construit en HTML/CSS/JS vanilla — hébergé gratuitement via GitHub Pages.*
+- [GitHub](https://github.com/Steve-Landry-NONO)
+- [LinkedIn](https://www.linkedin.com/in/steve-landry-kouokam-nono-18b175291/)
